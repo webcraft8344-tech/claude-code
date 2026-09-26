@@ -77,18 +77,18 @@ bun run docs:dev
 ### Runtime & Build
 
 - **Runtime**: Bun (not Node.js). All imports, builds, and execution use Bun APIs.
-- **Build**: `build.ts` 执行 `Bun.build()` with `splitting: true`，入口 `src/entrypoints/cli.tsx`，输出 `dist/cli.js` + chunk files。Build 默认启用 19 个 feature（见下方 Feature Flag 段）。构建后自动替换 `import.meta.require` 为 Node.js 兼容版本（产物 bun/node 都可运行）。构建时会将 `vendor/audio-capture/` 和 `src/utils/vendor/ripgrep/` 复制到 `dist/vendor/` 下。
+- **Build**: `build.ts` 执行 `Bun.build()` with `splitting: true`，入口 `src/entrypoints/cli.tsx`，输出 `dist/cli.js` + chunk files。Build 默认启用的 feature 来自 `scripts/defines.ts` 的 `DEFAULT_BUILD_FEATURES`（见下方 Feature Flag 段）。构建后自动替换 `import.meta.require` 为 Node.js 兼容版本（产物 bun/node 都可运行）。构建时会将 `vendor/audio-capture/` 和 `src/utils/vendor/ripgrep/` 复制到 `dist/vendor/` 下。
 - **Build (Vite)**: `vite.config.ts` + `scripts/post-build.ts`，代码分割模式，chunk 输出到 `dist/chunks/`。post-build 遍历 `dist/` 和 `dist/chunks/` 下所有 `.js` 文件做 `globalThis.Bun` 解构 patch，复制 vendor 文件到 `dist/vendor/`。
 - **Vendor 路径解析**: 构建后 chunk 文件位于 `dist/` 或 `dist/chunks/` 下，vendor 二进制在 `dist/vendor/`。`src/utils/distRoot.ts` 提供共享的 `distRoot` 函数，通过 `import.meta.url` 路径中 `lastIndexOf('dist')` 或 `lastIndexOf('src')` 定位根目录。`ripgrep.ts`、`computerUse/setup.ts`、`claudeInChrome/setup.ts`、`updateCCB.ts` 均使用 `distRoot` 而非内联 `import.meta.url` 路径推算。`packages/audio-capture-napi/src/index.ts` 有独立的 `lastIndexOf('dist')` 逻辑，功能等价。
 - **为什么 Vite 必须代码分割**: Bun/JSC 会全量解析单个大 JS 文件的 bytecode 和 JIT，单文件 17MB 产物导致 RSS 暴涨至 ~1GB（Node/V8 懒解析仅需 ~220MB）。代码分割为 600+ 小 chunk 后 Bun 按需加载，`--version` RSS 从 966MB 降至 35MB，完整加载从 1GB+ 降至 ~500MB。
-- **Dev mode**: `scripts/dev.ts` 通过 Bun `-d` flag 注入 `MACRO.*` defines，运行 `src/entrypoints/cli.tsx`。默认启用全部 feature。
+- **Dev mode**: `scripts/dev.ts` 通过 Bun `-d` flag 注入 `MACRO.*` defines，以 `--feature` 参数启用 `DEFAULT_BUILD_FEATURES`（与 build 共用同一列表）+ 所有 `FEATURE_*=1` 环境变量，运行 `src/entrypoints/cli.tsx`。
 - **Module system**: ESM (`"type": "module"`), TSX with `react-jsx` transform.
-- **Monorepo**: Bun workspaces — 17 个 workspace packages + 若干辅助目录 in `packages/` resolved via `workspace:*`。
+- **Monorepo**: Bun workspaces（`packages/*`、`packages/@ant/*`、`packages/@anthropic-ai/*`）resolved via `workspace:*`。
 - **Lint/Format**: Biome (`biome.json`)。覆盖 `src/`、`scripts/`、`packages/` 全项目（含 `packages/@ant/`）。`bun run lint` / `bun run lint:fix` / `bun run format` / `bun run check` / `bun run check:fix`。42 条规则因 decompiled 代码被关闭，仅保留 `recommended` 基线。
 - **Pre-commit**: husky + lint-staged。提交时自动对暂存文件执行 `biome check --fix`（TS/JS）和 `biome format --write`（JSON）。
 - **CI Lint**: `ci.yml` 在依赖安装后、类型检查前执行 `bunx biome ci .`，lint 或格式化不达标则 CI 失败。
 - **Defines**: 集中管理在 `scripts/defines.ts`。版本号从 `package.json` 读取（不再硬编码）。
-- **CI**: GitHub Actions — `ci.yml`（lint + 构建 + 测试）、`release-rcs.yml`（RCS 发布）、`update-contributors.yml`（自动更新贡献者）。
+- **CI**: GitHub Actions — `ci.yml`（lint + 构建 + 测试）、`release-rcs.yml`（RCS 发布）、`publish-npm.yml`（npm 发布）、`update-contributors.yml`（自动更新贡献者）。
 
 ### Entry & Bootstrap
 
@@ -105,7 +105,7 @@ bun run docs:dev
    - `environment-runner` / `self-hosted-runner` — BYOC runner
    - `--tmux` + `--worktree` 组合
    - 默认路径：加载 `main.tsx` 启动完整 CLI
-2. **`src/main.tsx`** (~5674 行) — Commander.js CLI definition。注册大量 subcommands：`mcp` (serve/add/remove/list...)、`server`、`ssh`、`open`、`auth`、`plugin`、`agents`、`auto-mode`、`doctor`、`update` 等。主 `.action()` 处理器负责权限、MCP、会话恢复、REPL/Headless 模式分发。
+2. **`src/main.tsx`** (~5600 行) — Commander.js CLI definition。注册大量 subcommands：`mcp` (serve/add/remove/list...)、`server`、`ssh`、`open`、`auth`、`plugin`、`agents`、`auto-mode`、`doctor`、`update` 等。主 `.action()` 处理器负责权限、MCP、会话恢复、REPL/Headless 模式分发。
 3. **`src/entrypoints/init.ts`** — One-time initialization (telemetry, config, trust dialog)。
 
 ### Core Loop
@@ -125,7 +125,7 @@ bun run docs:dev
 - **`src/Tool.ts`** — Tool interface definition (`Tool` type) and utilities (`findToolByName`, `toolMatchesName`).
 - **`src/tools.ts`** — Tool registry. Assembles the tool list; tools are imported from `@claude-code-best/builtin-tools` package. Some tools are conditionally loaded via `feature()` flags or `process.env.USER_TYPE`.
 - **`src/constants/tools.ts`** — `CORE_TOOLS` 白名单常量（38 个核心工具名），用于 `isDeferredTool` 白名单制判定。
-- **`packages/builtin-tools/src/tools/`** — 60 个工具目录（含 shared/testing 等工具目录），通过 `@claude-code-best/builtin-tools` 包导出。主要分类：
+- **`packages/builtin-tools/src/tools/`** — 60+ 个工具目录（含 shared/testing 等工具目录），通过 `@claude-code-best/builtin-tools` 包导出。主要分类：
   - **文件操作**: FileEditTool, FileReadTool, FileWriteTool, GlobTool, GrepTool
   - **Shell/执行**: BashTool, PowerShellTool, REPLTool
   - **Agent 系统**: AgentTool, TaskCreateTool, TaskUpdateTool, TaskListTool, TaskGetTool
@@ -142,7 +142,7 @@ bun run docs:dev
 - **`src/ink.ts`** — Ink render wrapper with ThemeProvider injection.
 - **`packages/@ant/ink/`** — Custom Ink framework（forked/internal），包含 components、core、hooks、keybindings、theme、utils。注意：不是 `src/ink/`。
 - **老控制台兼容模式** — `packages/@ant/ink/src/core/legacyConsole.ts`：检测 Windows build < 17763（无 ConPTY 的老系统，如 1709/LTSC 内网机器）时自动启用；`log-update.ts` 的渲染循环每约 1 秒（`LEGACY_CONSOLE_RESET_MS`）用一次全量重绘替换增量 diff，自愈老 conhost 的光标漂移花屏。`CLAUDE_CODE_LEGACY_CONSOLE=1`/`=0` 可强制开/关。其他环境完全不走此路径。
-- **`src/components/`** — 149 个组件目录/文件，渲染于终端 Ink 环境中。关键组件：
+- **`src/components/`** — 150 个左右组件目录/文件，渲染于终端 Ink 环境中。关键组件：
   - `App.tsx` — Root provider (AppState, Stats, FpsMetrics)
   - `Messages.tsx` / `MessageRow.tsx` — Conversation message rendering
   - `PromptInput/` — User input handling
@@ -168,7 +168,7 @@ bun run docs:dev
 | `packages/@ant/computer-use-swift/` | 截图 + 应用管理（dispatcher + per-platform backend） |
 | `packages/@ant/claude-for-chrome-mcp/` | Chrome 浏览器控制（通过 `--chrome` 启用） |
 | `packages/@ant/model-provider/` | Model provider 抽象层 |
-| `packages/builtin-tools/` | 内置工具集（60 个 tool 实现，通过 `@claude-code-best/builtin-tools` 导出） |
+| `packages/builtin-tools/` | 内置工具集（60+ 个 tool 实现，通过 `@claude-code-best/builtin-tools` 导出） |
 | `packages/agent-tools/` | Agent 工具集 |
 | `packages/acp-link/` | ACP 代理服务器（WebSocket → ACP agent 桥接） |
 | `packages/mcp-client/` | MCP 客户端库 |
@@ -179,9 +179,8 @@ bun run docs:dev
 | `packages/image-processor-napi/` | 图像处理（已恢复） |
 | `packages/modifiers-napi/` | 键盘修饰键检测（macOS FFI 实现） |
 | `packages/url-handler-napi/` | URL scheme 处理（环境变量 + CLI 参数读取） |
-| `packages/weixin/` | 微信集成（非 workspace 包） |
-
-辅助目录（无 package.json，非 workspace 包）: `langfuse-dashboard`（Langfuse 面板）、`shared-web-ui`（共享 Web UI 组件）、`highlight-code`（代码高亮）、`claude-pencil`（编辑器）、`vscode-ide-bridge`（VS Code 桥接）、`pokemon`（示例/测试）。
+| `packages/workflow-engine/` | 确定性 JS 脚本多 agent 编排引擎（port adapter 架构），被 `src/workflow/` 使用 |
+| `packages/weixin/` | 微信集成 |
 
 ### Bridge / Remote Control
 
@@ -216,20 +215,18 @@ Feature flags control which functionality is enabled at runtime. 代码中统一
 
 **启用方式**: 环境变量 `FEATURE_<FLAG_NAME>=1`。例如 `FEATURE_BUDDY=1 bun run dev`。
 
-**Build 默认 features**（65+ 个，见 `build.ts` 中 `DEFAULT_BUILD_FEATURES`）:
+**默认 features**（约 35 个，唯一来源是 `scripts/defines.ts` 的 `DEFAULT_BUILD_FEATURES`，被 `build.ts`、`scripts/vite-plugin-feature-flags.ts`、`scripts/dev.ts` 共用；每项带注释说明用途/禁用原因）:
 - 基础: `BUDDY`, `TRANSCRIPT_CLASSIFIER`, `BRIDGE_MODE`, `AGENT_TRIGGERS_REMOTE`, `CHICAGO_MCP`, `VOICE_MODE`
 - 统计/缓存: `SHOT_STATS`, `PROMPT_CACHE_BREAK_DETECTION`, `TOKEN_BUDGET`
 - P0 本地: `AGENT_TRIGGERS`, `ULTRATHINK`, `BUILTIN_EXPLORE_PLAN_AGENTS`, `LODESTONE`
 - P1 API 依赖: `EXTRACT_MEMORIES`, `VERIFICATION_AGENT`, `KAIROS_BRIEF`, `AWAY_SUMMARY`, `ULTRAPLAN`
 - P2: `DAEMON`, `ACP`
-- 工作流: `WORKFLOW_SCRIPTS`, `HISTORY_SNIP`, `MONITOR_TOOL`, `KAIROS`
+- 工作流: `WORKFLOW_SCRIPTS`, `MONITOR_TOOL`, `KAIROS`, `GOAL`（`src/services/goal`）, `AUTOFIX_PR`
 - 多 worker: `COORDINATOR_MODE`, `BG_SESSIONS`, `TEMPLATES`
 - 连接器: `CONNECTOR_TEXT`, `COMMIT_ATTRIBUTION`, `DIRECT_CONNECT`
 - 实验性: `EXPERIMENTAL_SKILL_SEARCH`, `EXPERIMENTAL_SEARCH_EXTRA_TOOLS`
 - 模式: `POOR`, `SSH_REMOTE`
-- 已禁用: `CONTEXT_COLLAPSE`, `FORK_SUBAGENT`, `UDS_INBOX`, `LAN_PIPES`, `REVIEW_ARTIFACT`, `TEAMMEM`, `SKILL_LEARNING`
-
-**Dev mode 默认**: 全部启用（见 `scripts/dev.ts`）。
+- 已禁用: `HISTORY_SNIP`, `CONTEXT_COLLAPSE`, `FORK_SUBAGENT`, `UDS_INBOX`, `LAN_PIPES`, `REVIEW_ARTIFACT`, `TEAMMEM`, `SKILL_LEARNING`
 
 **类型声明**: `src/types/internal-modules.d.ts` 中声明了 `bun:bundle` 模块的 `feature` 函数签名。
 
@@ -294,7 +291,7 @@ Feature flags control which functionality is enabled at runtime. 代码中统一
 
 - **框架**: `bun:test`（内置断言 + mock）
 - **单元测试**: 就近放置于 `src/**/__tests__/`，文件名 `<module>.test.ts`
-- **集成测试**: `tests/integration/` — 6 个文件（cli-arguments, context-build, message-pipeline, tool-chain, autonomy-lifecycle-user-flow, dependency-overrides）
+- **集成测试**: `tests/integration/` — cli-arguments, context-build, message-pipeline, tool-chain, autonomy-lifecycle-user-flow, dependency-overrides, goal-lifecycle 等
 - **共享 mock/fixture**: `tests/mocks/`（api-responses, file-system, fixtures/）
 - **命名**: `describe("functionName")` + `test("behavior description")`，英文
 - **包测试**: `packages/` 下各包也有独立测试（如 `color-diff-napi` 11 tests）
@@ -382,7 +379,7 @@ bun run precheck
 ## Working with This Codebase
 
 - **precheck must pass** — `bun run precheck`（typecheck + lint fix + test）必须零错误，任何修改都不能引入新的类型/lint/测试错误。
-- **Feature flags** — 默认全部关闭（`feature()` 返回 `false`）。Dev/build 各有自己的默认启用列表。不要在 `cli.tsx` 中重定义 `feature` 函数。
+- **Feature flags** — 默认全部关闭（`feature()` 返回 `false`）。Dev/build/Vite 共用 `scripts/defines.ts` 中的 `DEFAULT_BUILD_FEATURES`，新增默认开启的 flag 只改这里。不要在 `cli.tsx` 中重定义 `feature` 函数。
 - **React Compiler output** — Components have decompiled memoization boilerplate (`const $ = _c(N)`). This is normal.
 - **`bun:bundle` import** — `import { feature } from 'bun:bundle'` 是 Bun 内置模块，由运行时/构建器解析。不要用自定义函数替代它。**`feature()` 只能直接用在 `if` 语句或三元表达式的条件位置**（Bun 编译器限制），不能赋值给变量、不能放在箭头函数体里、不能作为 `&&` 链的一部分。正确：`if (feature('X')) {}` 或 `feature('X') ? a : b`。
 - **`src/` path alias** — tsconfig maps `src/*` to `./src/*`. Imports like `import { ... } from 'src/utils/...'` are valid.
