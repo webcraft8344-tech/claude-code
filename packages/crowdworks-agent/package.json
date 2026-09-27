@@ -1,0 +1,16 @@
+{
+  "name": "@claude-code-best/crowdworks-agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "クラウドワークス副業（取材・採用記事ライティング）の案件探索〜経理までを自動化するエージェント用 CLI とスキル群",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "bin": {
+    "cw": "./src/cli.ts"
+  },
+  "scripts": {
+    "cw": "bun run src/cli.ts",
+    "test": "bun test"
+  }
+}
