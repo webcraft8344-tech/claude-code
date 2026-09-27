@@ -83,5 +83,5 @@
 
 | アカウント | 特徴 | 参考にする点 |
 |------------|------|--------------|
-| マユコ🔮恋愛・復縁専門の占い師 | Threads・Instagram 両方で運用。特に Instagram は投稿のバリエーションが豊富で強い | Instagram の投稿形式の使い分け・バリエーションの出し方 |
+| マユコ🔮恋愛・復縁専門の占い師（[Instagram](https://www.instagram.com/uranai_mayuko/) / [Threads](https://www.threads.com/@uranai_mayuko)） | Threads・Instagram 両方で運用。特に Instagram は投稿のバリエーションが豊富で強い | Instagram の投稿形式の使い分け・バリエーションの出し方 |
 | ニッシー｜恋愛占い師×引き寄せ占導師 | 「不安や悩みの解放」という方向性が自アカウントと近い | 不安を手放させる言葉選び・読後感（近いぶん差別化ポイントも意識する） |
