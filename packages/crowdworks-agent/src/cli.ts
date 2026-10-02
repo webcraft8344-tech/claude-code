@@ -91,6 +91,7 @@ import {
   readJson,
   readText,
   readTextIfExists,
+  safeName,
   writeJson,
   writeText,
 } from './util/store.js'
@@ -587,13 +588,29 @@ const commands: Record<string, (a: ParsedArgs) => void> = {
 
   portfolio(a) {
     if (a._[0] === 'add') {
-      const file = need(a._[1], '記事ファイル')
-      const item = portfolioFromArticle(readText(file), {
-        title: need(optStr(a, 'title'), '--title'),
-        url: optStr(a, 'url') ?? '',
-        tags: optStr(a, 'tags')?.split(','),
-        date: optStr(a, 'date') ?? toISODate(new Date()),
-      })
+      const title = need(optStr(a, 'title'), '--title')
+      const tags = optStr(a, 'tags')?.split(',')
+      const date = optStr(a, 'date') ?? toISODate(new Date())
+      // 本文ファイルがない実績（紙面掲載など）は --summary と --genres で登録する
+      const item = a._[1]
+        ? portfolioFromArticle(readText(a._[1]), {
+            title,
+            url: optStr(a, 'url') ?? '',
+            tags,
+            date,
+          })
+        : {
+            id: safeName(title).slice(0, 40),
+            title,
+            url: optStr(a, 'url') ?? '',
+            genres: optStr(a, 'genres')?.split(',') ?? [],
+            tags: tags ?? [],
+            summary: need(
+              optStr(a, 'summary'),
+              '記事ファイル または --summary',
+            ),
+            date,
+          }
       const list = addPortfolio(item)
       out(
         `ポートフォリオに追加（計${list.length}本）:\n${JSON.stringify(item, null, 2)}`,
@@ -667,7 +684,7 @@ const HELP = `cw — クラウドワークス副業 自動化CLI（データ: ${
   books month [YYYY-MM] | tax [YYYY] | pending | list
  8 ナレッジ
   wins                                  勝ちパターン分析
-  portfolio add <記事> --title T --url U | portfolio list
+  portfolio add <記事> --title T --url U | portfolio add --title T --summary S --genres 経営者,地域 | portfolio list
   templates harvest <ファイル...>       質問・見出し・言い回しテンプレを更新
   client note <名前> "メモ" | client hints <名前> <修正依頼.txt> | client show <名前>
 `

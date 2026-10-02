@@ -189,3 +189,30 @@ describe('delivery', () => {
     expect(docx).toContain('タイトル')
   })
 })
+
+describe('portfolio without URLs', () => {
+  test('lists URL-less achievements and drops unrelated or empty sections', () => {
+    const today = new Date().toISOString().slice(0, 10)
+    const item = (id: string, genres: string[]) => ({
+      id,
+      title: `新聞掲載：${id}`,
+      url: '',
+      genres,
+      tags: [],
+      summary: `${id}の概要`,
+      date: today,
+    })
+    const job = extractJob(
+      '地元企業の社長インタビュー 取材経験のある方 1記事15000円 3000文字',
+    )
+    const p = buildProposal(job, {
+      ...DEFAULT_PROFILE,
+      portfolio: [item('経営者', ['経営者']), item('教育', ['教育'])],
+    })
+    expect(p.portfolio.map(x => x.id)).toEqual(['経営者'])
+    expect(p.long).toContain('・新聞掲載：経営者\n  経営者の概要')
+    const empty = buildProposal(job, { ...DEFAULT_PROFILE, portfolio: [] })
+    expect(empty.long).not.toContain('【参考記事】')
+    expect(empty.long).not.toContain('\n\n\n')
+  })
+})

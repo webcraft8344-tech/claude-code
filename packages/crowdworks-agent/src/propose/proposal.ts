@@ -53,7 +53,8 @@ export function selectPortfolio(
         score += tags.length
         reasons.push(`キーワード一致: ${tags.join('、')}`)
       }
-      if (item.date) {
+      // 新しさは同点時の順位付けだけに使う（無関係な記事を選ばない）
+      if (score > 0 && item.date) {
         const ageDays = (Date.now() - new Date(item.date).getTime()) / 86400000
         if (ageDays < 365) score += 0.5
       }
@@ -98,9 +99,14 @@ export function buildProposal(
         .slice(0, 3)
         .map(s => `・${s.label}：${s.evidence}`)
         .join('\n')
-  const portfolioLong = portfolio.length
-    ? portfolio.map(p => `・${p.title}\n  ${p.url}\n  ${p.summary}`).join('\n')
-    : '・（ポートフォリオ未登録：cw portfolio add で登録してください）'
+  // URL のない実績（紙媒体など）はタイトルと概要だけ載せる。該当なしなら見出しごと消す
+  const portfolioLong = portfolio
+    .map(p =>
+      [`・${p.title}`, p.url && `  ${p.url}`, p.summary && `  ${p.summary}`]
+        .filter(Boolean)
+        .join('\n'),
+    )
+    .join('\n')
 
   const vars = {
     client: job.client ?? '',
@@ -111,9 +117,8 @@ export function buildProposal(
     bid: bid !== null ? yen(bid) : payLabel(job),
     deadline: opts.deadline ?? job.deadline ?? 'ご指定の納期',
   }
-  const long = fill(profile.selfPrTemplate, vars).replace(
-    /^ ご担当者様/m,
-    'ご担当者様',
+  const long = dropEmptySections(
+    fill(profile.selfPrTemplate, vars).replace(/^ ご担当者様/m, 'ご担当者様'),
   )
 
   const shortVars = {
@@ -127,7 +132,7 @@ export function buildProposal(
     portfolio: portfolio.length
       ? portfolio
           .slice(0, 2)
-          .map(p => `・${p.title} ${p.url}`)
+          .map(p => `・${p.title}${p.url ? ` ${p.url}` : ''}`)
           .join('\n')
       : '',
   }
@@ -139,6 +144,15 @@ export function buildProposal(
     profile.shortProposalChars,
   )
   return { long, short, mapping, portfolio, bid }
+}
+
+/** 中身が空になった【見出し】と連続する空行を取り除く。 */
+export function dropEmptySections(text: string): string {
+  return text
+    .split('\n')
+    .filter((l, i, a) => !(/^【/.test(l) && (a[i + 1] ?? '') === ''))
+    .filter((l, i, a) => !(l === '' && a[i - 1] === ''))
+    .join('\n')
 }
 
 function firstSentence(s: string): string {
@@ -168,10 +182,7 @@ export function trimToChars(text: string, target: number): string {
     if (idx < 0) break
     lines.splice(idx, 1)
   }
-  return lines
-    .filter((l, i, a) => !(/^【/.test(l) && (a[i + 1] ?? '') === ''))
-    .filter((l, i, a) => !(l === '' && a[i - 1] === ''))
-    .join('\n')
+  return dropEmptySections(lines.join('\n'))
 }
 
 export function proposalMarkdown(job: Job, prop: Proposal): string {
@@ -189,7 +200,9 @@ export function proposalMarkdown(job: Job, prop: Proposal): string {
     '## 提示するポートフォリオ',
     '',
     ...(prop.portfolio.length
-      ? prop.portfolio.map(p => `- [${p.title}](${p.url}) — ${p.summary}`)
+      ? prop.portfolio.map(
+          p => `- ${p.url ? `[${p.title}](${p.url})` : p.title} — ${p.summary}`,
+        )
       : ['- （該当なし）']),
     '',
     '## 詳細版',

@@ -44,7 +44,8 @@ export function addPortfolio(item: PortfolioItem): Profile['portfolio'] {
   const path = p('profile.json')
   const prof = readJson<Partial<Profile>>(path, {})
   const list = (prof.portfolio ?? []).filter(
-    x => x.id !== item.id && x.url !== item.url,
+    // URL なしの実績同士は URL で重複判定しない
+    x => x.id !== item.id && !(item.url && x.url === item.url),
   )
   list.push(item)
   prof.portfolio = list
