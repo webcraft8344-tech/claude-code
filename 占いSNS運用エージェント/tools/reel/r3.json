@@ -1,1 +1,55 @@
-{"emblemPath": "../../assets/emblem.svg", "duration": 34, "coverAt": 1.5, "scenes": [{"a": 0, "b": 4, "html": "<div class=\"l big\">復縁を望む人ほど</div><div class=\"l big\">ある日ぷつりと</div><div class=\"l big\">何もできなくなる。</div>"}, {"a": 4, "b": 8, "html": "<div class=\"l\">連絡したいのに</div><div class=\"l\">指が動かない。</div><div class=\"gap\"></div><div class=\"l\">彼のSNSも</div><div class=\"l\">もう開けない。</div>"}, {"a": 8, "b": 11.5, "html": "<div class=\"l\">そんな自分を</div><div class=\"l\">「弱い」と</div><div class=\"l\">責めていないか。</div>"}, {"a": 11.5, "b": 14, "html": "<div class=\"l big\">本当の理由は、違う。</div>"}, {"a": 14, "b": 17.5, "top": 560, "fx": "moonfull", "html": "<div class=\"l\">心は、</div><div class=\"l\"><span class=\"gold\">月</span>に似ている。</div>"}, {"a": 17.5, "b": 22, "top": 520, "fx": "moonwane", "html": "<div class=\"l\">待つたびに</div><div class=\"l\">言葉を飲み込むたびに</div><div class=\"l\">少しずつ欠けていく。</div>"}, {"a": 22, "b": 26, "html": "<div class=\"l\">動けなくなったのは</div><div class=\"l\">それだけ</div><div class=\"l\">想い続けてきた証だ。</div>"}, {"a": 26, "b": 30, "top": 520, "fx": "moonwax", "html": "<div class=\"l\">欠けた月は</div><div class=\"l\">新月を越えて</div><div class=\"l\">また満ちていく。</div>"}, {"a": 30, "b": 34, "html": "<div class=\"l\">今は彼より先に</div><div class=\"l\">自分を満たす刻だ。</div><div class=\"l sig\">— 紗希</div>"}]}
+{
+ "emblemPath": "../../assets/emblem.svg",
+ "duration": 34,
+ "coverAt": 1.5,
+ "scenes": [
+  {
+   "a": 0,
+   "b": 4,
+   "html": "<div class=\"l big\">復縁を望む人ほど</div><div class=\"l big\">ある日ぷつりと</div><div class=\"l big\">何もできなくなる。</div>"
+  },
+  {
+   "a": 4,
+   "b": 8,
+   "html": "<div class=\"l\">連絡したいのに</div><div class=\"l\">指が動かない。</div><div class=\"gap\"></div><div class=\"l\">彼のSNSも</div><div class=\"l\">もう開けない。</div>"
+  },
+  {
+   "a": 8,
+   "b": 11.5,
+   "html": "<div class=\"l\">そんな自分を</div><div class=\"l\">「弱い」と</div><div class=\"l\">責めていないか。</div>"
+  },
+  {
+   "a": 11.5,
+   "b": 14,
+   "html": "<div class=\"l big\">本当の理由は、違う。</div>"
+  },
+  {
+   "a": 14,
+   "b": 17.5,
+   "fx": "moonfull",
+   "html": "<div class=\"l\">心は、</div><div class=\"l\"><span class=\"gold\">月</span>に似ている。</div>"
+  },
+  {
+   "a": 17.5,
+   "b": 22,
+   "fx": "moonwane",
+   "html": "<div class=\"l\">待つたびに</div><div class=\"l\">言葉を飲み込むたびに</div><div class=\"l\">少しずつ欠けていく。</div>"
+  },
+  {
+   "a": 22,
+   "b": 26,
+   "html": "<div class=\"l\">動けなくなったのは</div><div class=\"l\">それだけ</div><div class=\"l\">想い続けてきた証だ。</div>"
+  },
+  {
+   "a": 26,
+   "b": 30,
+   "fx": "moonwax",
+   "html": "<div class=\"l\">欠けた月は</div><div class=\"l\">新月を越えて</div><div class=\"l\">また満ちていく。</div>"
+  },
+  {
+   "a": 30,
+   "b": 34,
+   "html": "<div class=\"l\">今は彼より先に</div><div class=\"l\">自分を満たす刻だ。</div>"
+  }
+ ]
+}

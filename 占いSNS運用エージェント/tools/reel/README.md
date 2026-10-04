@@ -13,3 +13,9 @@ node render.js r1.json out.mp4
 - `emblemPath` はエンブレムの SVG（`assets/emblem.svg`）
 - Chromium は `/opt/pw-browsers/chromium-1194/chrome-linux/chrome` を使う（環境に合わせて `render.js` を変更）
 - 音声は無音。曲は Instagram アプリ側で付ける
+
+## 背景（2026-10-04 更新）
+- 星雲（紫・青緑・金・紅）がゆっくり流れる／星のまたたき／立ちのぼる光の粒子／ときどき流れ星
+- 回転する星図盤（エンブレム）
+- 画面下に、顔を見せないフードの占い師が光る玉を抱くシルエット
+- 署名は入れない

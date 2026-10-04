@@ -1,1 +1,43 @@
-{"emblemPath": "../../assets/emblem.svg", "duration": 26, "coverAt": 1.5, "scenes": [{"a": 0, "b": 3.5, "html": "<div class=\"l big\">どれに目が留まるかで</div><div class=\"l big\">今週のあなたの</div><div class=\"l big\"><span class=\"gold\">配置</span>が見えてくる</div>"}, {"a": 3.5, "b": 8.5, "top": 640, "fx": "symbols", "html": "<div class=\"l\">直感で、ひとつ</div>"}, {"a": 8.5, "b": 10.5, "html": "<div class=\"l\">心の中で</div><div class=\"l\">数をひとつ決めて</div>"}, {"a": 10.5, "b": 14.5, "html": "<div class=\"l\"><span class=\"gold\">一　月</span></div><div class=\"gap\"></div><div class=\"l\">今は、答えを出す</div><div class=\"l\">刻ではない。</div><div class=\"l\">夜に決めたことは</div><div class=\"l\">朝にもう一度確かめよ。</div>"}, {"a": 14.5, "b": 18.5, "html": "<div class=\"l\"><span class=\"gold\">二　羅針盤</span></div><div class=\"gap\"></div><div class=\"l\">行き先は、すでに</div><div class=\"l\">心の奥で決まっている。</div><div class=\"l\">基準を「彼」から</div><div class=\"l\">「自分」へ移す。</div>"}, {"a": 18.5, "b": 22.5, "html": "<div class=\"l\"><span class=\"gold\">三　古い地図</span></div><div class=\"gap\"></div><div class=\"l\">過去の恋が</div><div class=\"l\">次の一歩の道しるべになる。</div><div class=\"l\">同じ道を、違う歩き方で。</div>"}, {"a": 22.5, "b": 26, "html": "<div class=\"l\">選んだ数を</div><div class=\"l\">コメントに置いていきなさい。</div><div class=\"l sig\">— 紗希</div>"}]}
+{
+ "emblemPath": "../../assets/emblem.svg",
+ "duration": 26,
+ "coverAt": 1.5,
+ "scenes": [
+  {
+   "a": 0,
+   "b": 3.5,
+   "html": "<div class=\"l big\">どれに目が留まるかで</div><div class=\"l big\">今週のあなたの</div><div class=\"l big\"><span class=\"gold\">配置</span>が見えてくる</div>"
+  },
+  {
+   "a": 3.5,
+   "b": 8.5,
+   "fx": "symbols",
+   "html": "<div class=\"l\">直感で、ひとつ</div>"
+  },
+  {
+   "a": 8.5,
+   "b": 10.5,
+   "html": "<div class=\"l\">心の中で</div><div class=\"l\">数をひとつ決めて</div>"
+  },
+  {
+   "a": 10.5,
+   "b": 14.5,
+   "html": "<div class=\"l\"><span class=\"gold\">一　月</span></div><div class=\"gap\"></div><div class=\"l\">今は、答えを出す</div><div class=\"l\">刻ではない。</div><div class=\"l\">夜に決めたことは</div><div class=\"l\">朝にもう一度確かめよ。</div>"
+  },
+  {
+   "a": 14.5,
+   "b": 18.5,
+   "html": "<div class=\"l\"><span class=\"gold\">二　羅針盤</span></div><div class=\"gap\"></div><div class=\"l\">行き先は、すでに</div><div class=\"l\">心の奥で決まっている。</div><div class=\"l\">基準を「彼」から</div><div class=\"l\">「自分」へ移す。</div>"
+  },
+  {
+   "a": 18.5,
+   "b": 22.5,
+   "html": "<div class=\"l\"><span class=\"gold\">三　古い地図</span></div><div class=\"gap\"></div><div class=\"l\">過去の恋が</div><div class=\"l\">次の一歩の道しるべになる。</div><div class=\"l\">同じ道を、違う歩き方で。</div>"
+  },
+  {
+   "a": 22.5,
+   "b": 26,
+   "html": "<div class=\"l\">選んだ数を</div><div class=\"l\">コメントに置いていきなさい。</div>"
+  }
+ ]
+}
