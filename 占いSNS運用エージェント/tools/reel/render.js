@@ -10,7 +10,7 @@ const ffmpeg=require('ffmpeg-static');
   await p.goto('file://'+path.resolve('template.html'));
   await p.evaluate(c=>setup(c),cfg);
   const fps=30,N=Math.round(cfg.duration*fps);
-  const ff=spawn(ffmpeg,['-y','-loglevel','error','-f','image2pipe','-framerate',String(fps),'-i','-','-f','lavfi','-i','anullsrc=r=44100:cl=stereo','-shortest','-c:v','libx264','-pix_fmt','yuv420p','-crf','20','-preset','medium','-r',String(fps),'-c:a','aac','-movflags','+faststart',out]);
+  const ff=spawn(ffmpeg,['-y','-loglevel','error','-f','image2pipe','-framerate',String(fps),'-i','-',...(cfg.audio?['-i',cfg.audio]:['-f','lavfi','-i','anullsrc=r=44100:cl=stereo']),'-shortest','-c:v','libx264','-pix_fmt','yuv420p','-crf','20','-preset','medium','-r',String(fps),'-c:a','aac','-movflags','+faststart',out]);
   ff.stderr.on('data',d=>process.stderr.write(d));
   for(let i=0;i<N;i++){
     await p.evaluate(t=>render(t),i/fps);

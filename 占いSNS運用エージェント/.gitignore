@@ -1,0 +1,2 @@
+tools/tts/*.onnx
+tools/tts/*.bin
