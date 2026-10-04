@@ -39,5 +39,6 @@
    "b": 26,
    "html": "<div class=\"l\">選んだ数を</div><div class=\"l\">コメントに置いていきなさい。</div>"
   }
- ]
+ ],
+ "portrait": "../../assets/portrait.png"
 }
