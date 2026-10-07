@@ -29,7 +29,7 @@
 自分への返信：
 ```
 ▼鑑定の門（LINE）
-https://lin.ee/6WanXyu
+https://lin.ee/OjyVyly
 ```
 
 ## ② 12:00｜明日から金星逆行（200字）

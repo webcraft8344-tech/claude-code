@@ -213,7 +213,7 @@
 **自分への返信（リンク）**
 ```
 ▼鑑定の門（LINE）
-https://lin.ee/6WanXyu
+https://lin.ee/OjyVyly
 ```
 
 ---

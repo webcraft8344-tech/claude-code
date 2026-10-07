@@ -5,7 +5,7 @@
 
 - 作成日：2026-09-27
 - 設計元：`BRAND.md` 4-3・6章
-- LINE：https://lin.ee/6WanXyu
+- LINE：https://lin.ee/OjyVyly
 - ［ ］は URL が決まったら差し替える箇所：`［フォームURL］` `［note梅URL］` `［note竹URL］` `［note松URL］`
 
 ## 配信の設定メモ

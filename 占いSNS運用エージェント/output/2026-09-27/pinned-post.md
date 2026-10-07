@@ -58,7 +58,7 @@
 
 ```
 ▼無料鑑定はこちら（LINE）
-https://lin.ee/6WanXyu
+https://lin.ee/OjyVyly
 
 フォームに答えると、48時間以内に
 あなたの「3つの逆転戦術」をお届けします。

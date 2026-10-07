@@ -1,7 +1,7 @@
 # LINE 配信文（権威路線）：あいさつ＋ステップ配信＋セッション案内＋自動応答
 
 - 作成日：2026-09-30（`output/2026-09-27/line-messages.md` を `CHARACTER.md` の語り口で書き直し、高単価セッションへの導線を追加）
-- LINE：https://lin.ee/6WanXyu
+- LINE：https://lin.ee/OjyVyly
 - 差し替え箇所：`［note梅URL］` `［note竹URL］` `［note松URL］` `［note瞑想URL］` `［note書き換えURL］`
 - 無料鑑定の受付は、フォームを使わず **LINE のトークで問いに答えてもらう**（2026-09-30 変更）
 - LINE は1対1の場なので、SNS より一段だけ丁寧な語り口（です・ます を少し混ぜる）。それでも絵文字・「！」は使わない。署名は「— 紫苑」
