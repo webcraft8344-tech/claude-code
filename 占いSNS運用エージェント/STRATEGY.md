@@ -92,7 +92,7 @@
 
 | アカウント | 参考にする点 | 状態 |
 |------------|--------------|------|
-| [@tsukuyomi_light](https://www.threads.com/@tsukuyomi_light)（Threads） | 投稿の型・1行目・世界観（言葉づかい・トーン・プロフィールの見せ方） | 分析待ち：Threads はこの環境から開けないため、プロフィールと伸びている投稿の本文（スクリーンショット可）を共有してもらって分析する |
+| [@tsukuyomi_light](https://www.threads.com/@tsukuyomi_light)（Threads） | 投稿の型・1行目・世界観（言葉づかい・トーン・プロフィールの見せ方） | 分析済み（`output/2026-10-09/benchmark-tsukuyomi.md`） |
 
 - 分析の結果は `output/YYYY-MM-DD/benchmark-tsukuyomi.md` にまとめ、`workflows/writing.md` の型に反映する
 - 文章・画像はコピーしない。「構造」と「切り口」だけを参考にする（`CLAUDE.md` 3章）
