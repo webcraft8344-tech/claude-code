@@ -49,6 +49,17 @@ export interface Profile {
   selfPrTemplate: string
   /** 短縮版の目安文字数 */
   shortProposalChars: number
+  /** 毎朝のダイジェスト（cw digest）の検索条件 */
+  search?: {
+    /** クラウドワークスの検索キーワード（1語ずつ検索して結果をまとめる） */
+    keywords: string[]
+    /** 何時間以内に掲載・再掲載された案件を対象にするか */
+    sinceHours?: number
+    /** 詳細ページを読む最大件数（サイトへの負荷を抑えるため） */
+    maxDetails?: number
+    /** 対象にする仕事カテゴリID（空なら全カテゴリ）。既定はライティング系 */
+    categoryIds?: number[]
+  }
   fees: {
     /** クラウドワークスのシステム利用料（契約金額・税込に対する段階制） */
     tiers: FeeTier[]
@@ -56,6 +67,13 @@ export interface Profile {
     transferFee: number
   }
 }
+
+/**
+ * クラウドワークスのライティング系カテゴリ（記事・Webコンテンツ作成、ライティング全般、
+ * SEOライティング、取材・インタビュー記事など）。体験談提供・アンケート・文字起こし・
+ * データ入力などは含めない。
+ */
+export const WRITING_CATEGORY_IDS = [36, 37, 38, 39, 40, 41, 288]
 
 export const DEFAULT_PROFILE: Profile = {
   name: '山田 花子',
@@ -127,6 +145,19 @@ export const DEFAULT_PROFILE: Profile = {
     'ご検討のほど、どうぞよろしくお願いいたします。',
   ].join('\n'),
   shortProposalChars: 400,
+  search: {
+    keywords: [
+      '取材',
+      'インタビュー記事',
+      '経営者',
+      '地域 記事',
+      '教育 記事',
+      'スポーツ 記事',
+    ],
+    sinceHours: 24,
+    maxDetails: 40,
+    categoryIds: WRITING_CATEGORY_IDS,
+  },
   fees: {
     tiers: [
       { upTo: 100000, rate: 0.2 },

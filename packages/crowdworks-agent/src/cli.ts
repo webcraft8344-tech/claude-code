@@ -77,6 +77,7 @@ import {
 import { buildProposal, proposalMarkdown } from './propose/proposal.js'
 import { extractJob } from './scout/extract.js'
 import { jobDir, jobsTable, listJobs, loadJob, saveJob } from './scout/jobs.js'
+import { digestMarkdown, runDigest } from './scout/digest.js'
 import { scoreJob } from './scout/score.js'
 import {
   optBool,
@@ -137,7 +138,7 @@ const RULES_TEMPLATE: ClientRules = {
   style: 'です・ます調',
 }
 
-const commands: Record<string, (a: ParsedArgs) => void> = {
+const commands: Record<string, (a: ParsedArgs) => void | Promise<void>> = {
   init() {
     const path = p('profile.json')
     if (!existsSync(path)) writeJson(path, DEFAULT_PROFILE)
@@ -190,6 +191,27 @@ const commands: Record<string, (a: ParsedArgs) => void> = {
       )
     }
     if (!optBool(a, 'dry-run')) out(`\n判定メモ: ${p('jobs')}/<案件ID>/memo.md`)
+  },
+
+  async digest(a) {
+    const profile = loadProfile()
+    const result = await runDigest(
+      profile,
+      {
+        keywords: optStr(a, 'keywords')
+          ?.split(/[,、]/)
+          .map(s => s.trim())
+          .filter(Boolean),
+        sinceHours: optNum(a, 'since'),
+        maxDetails: optNum(a, 'max'),
+      },
+      loadApplications(),
+    )
+    // 判定した案件は jobs/<ID>/ に保存し、cw propose <ID> にそのまま進めるようにする
+    for (const it of result.items) saveJob(it.job, it.verdict, it.job.rawText)
+    const md = digestMarkdown(result)
+    writeText(optStr(a, 'out') ?? p('digests', `${result.date}.md`), md)
+    out(md)
   },
 
   // ---- 2. 応募・提案文 ----
@@ -658,6 +680,7 @@ const HELP = `cw — クラウドワークス副業 自動化CLI（データ: ${
  1 案件探索・選定
   scout <file...> [--dry-run]           案件テキスト/HTMLを抽出・スコアリング・判定メモ保存
   scout list                            保存済み案件の一覧
+  digest [--keywords 取材,インタビュー --since 24 --max 40]  クラウドワークスの新着を取得・判定してダイジェスト作成
  2 応募・提案文
   propose <id> [--bid N]                提案文（詳細版・短縮版）＋対応表＋ポートフォリオ選定
   apply <id> [--bid N --variant short|long --text 送信文.txt]  応募履歴に追記
@@ -689,7 +712,7 @@ const HELP = `cw — クラウドワークス副業 自動化CLI（データ: ${
   client note <名前> "メモ" | client hints <名前> <修正依頼.txt> | client show <名前>
 `
 
-export function main(argv: string[]): void {
+export async function main(argv: string[]): Promise<void> {
   const [cmd, ...rest] = argv
   if (!cmd || cmd === 'help' || cmd === '--help') {
     out(HELP)
@@ -701,14 +724,12 @@ export function main(argv: string[]): void {
     process.exitCode = 1
     return
   }
-  fn(parseArgs(rest))
+  await fn(parseArgs(rest))
 }
 
 if (import.meta.main) {
-  try {
-    main(process.argv.slice(2))
-  } catch (e) {
+  main(process.argv.slice(2)).catch((e: unknown) => {
     process.stderr.write(`エラー: ${(e as Error).message}\n`)
     process.exitCode = 1
-  }
+  })
 }
