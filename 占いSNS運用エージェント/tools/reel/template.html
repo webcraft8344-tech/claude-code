@@ -116,7 +116,7 @@ function render(t){
   let fx='';
   S.forEach((s,i)=>{
     const el=document.getElementById('s'+i);
-    const fi=s.instant?1:ease((t-s.a)/0.7), fo=1-ease((t-(s.b-0.5))/0.5);
+    const nx=S[i+1];const fi=s.instant?(t>=s.a?1:0):ease((t-s.a)/0.7), fo=(nx&&nx.instant)?(t<s.b?1:0):1-ease((t-(s.b-0.5))/0.5); // instant scenes cut in hard
     const o=Math.max(0,Math.min(fi,fo));
     el.style.opacity=o;el.style.transform=`translateY(${(1-fi)*24}px)`;
     if(s.fx==='symbols'){const k=[0,1,2].map(j=>Math.min(o,ease((t-s.a-0.4-j*0.5)/0.6)));fx+=icons(k,t);}

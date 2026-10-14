@@ -1,0 +1,66 @@
+{
+ "emblemPath": "../../assets/emblem.svg",
+ "portrait": "../../assets/portrait.png",
+ "duration": 20,
+ "coverAt": 1.2,
+ "scenes": [
+  {
+   "a": 0,
+   "b": 2.6,
+   "instant": true,
+   "lead": 0.05,
+   "tail": 0.35,
+   "speed": 1.25,
+   "html": "<div class=\"l big\">飛ばさないで。</div><div class=\"gap\"></div><div class=\"l\">今、元恋人から</div><div class=\"l big\"><span class=\"gold\">連絡が来やすい時期。</span></div>",
+   "say": "飛ばさないで。今は、元恋人から連絡が来やすいと言われる時。"
+  },
+  {
+   "a": 2.6,
+   "b": 5.6,
+   "lead": 0.15,
+   "tail": 0.3,
+   "speed": 1.2,
+   "html": "<div class=\"l sm\">金星逆行　10/3〜11/14</div><div class=\"gap\"></div><div class=\"l\">でも、気をつけてほしいのは</div><div class=\"l\">連絡じゃない。</div>",
+   "say": "でも、気をつけてほしいのは、連絡じゃない。"
+  },
+  {
+   "a": 5.6,
+   "b": 7.6,
+   "instant": true,
+   "lead": 0.1,
+   "tail": 0.5,
+   "speed": 1.05,
+   "html": "<div class=\"l big\"><span class=\"gold\">返す速さ。</span></div>",
+   "say": "返す速さです。"
+  },
+  {
+   "a": 7.6,
+   "b": 11.6,
+   "fx": "moonwane",
+   "lead": 0.15,
+   "tail": 0.3,
+   "speed": 1.2,
+   "html": "<div class=\"l\">急いだ返信は</div><div class=\"l\">昔の関係を</div><div class=\"l\">そのまま連れて戻る。</div>",
+   "say": "急いだ返信は、昔の関係を、そのまま連れて戻ります。"
+  },
+  {
+   "a": 11.6,
+   "b": 15.6,
+   "lead": 0.15,
+   "tail": 0.3,
+   "speed": 1.15,
+   "html": "<div class=\"l\">私が復縁できたのは</div><div class=\"l\">心が整ってから送った</div><div class=\"l big\"><span class=\"gold\">一通</span>でした。</div>",
+   "say": "私が復縁できたのは、心が整ってから送った、一通でした。"
+  },
+  {
+   "a": 15.6,
+   "b": 20,
+   "fx": "moonwax",
+   "lead": 0.15,
+   "tail": 1.2,
+   "speed": 1.05,
+   "html": "<div class=\"l big\">連絡が来たら</div><div class=\"l big\">一晩おいてから。</div><div class=\"gap\"></div><div class=\"l sm\">11/14まで、保存しておいて</div>",
+   "say": "連絡が来たら、一晩おいてから。"
+  }
+ ]
+}

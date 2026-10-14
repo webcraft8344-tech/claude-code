@@ -17,9 +17,10 @@ t=0.0;clips=[]
 for s in cfg['scenes']:
     dur0=s['b']-s['a']
     if s.get('say'):
-        a,sr=speak(s['say'],voice,speed);assert sr==SR
-        need=lead+len(a)/SR+tail
-        clips.append((t+lead,a))
+        ld,tl=s.get('lead',lead),s.get('tail',tail)   # per-scene overrides
+        a,sr=speak(s['say'],voice,s.get('speed',speed));assert sr==SR
+        need=ld+len(a)/SR+tl
+        clips.append((t+ld,a))
     else: need=dur0
     d=max(dur0,need)
     s['a'],s['b']=round(t,2),round(t+d,2);t+=d
