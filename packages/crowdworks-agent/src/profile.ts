@@ -59,6 +59,11 @@ export interface Profile {
     maxDetails?: number
     /** 対象にする仕事カテゴリID（空なら全カテゴリ）。既定はライティング系 */
     categoryIds?: number[]
+    /**
+     * 文章系の仕事が混ざるカテゴリ（文字起こし・SNS運用・動画台本など）。
+     * タイトルが文章系の仕事（文字起こし・投稿文・台本など）と判断できたものだけ対象にする
+     */
+    extraCategoryIds?: number[]
   }
   fees: {
     /** クラウドワークスのシステム利用料（契約金額・税込に対する段階制） */
@@ -74,6 +79,14 @@ export interface Profile {
  * データ入力などは含めない。
  */
 export const WRITING_CATEGORY_IDS = [36, 37, 38, 39, 40, 41, 288]
+
+/**
+ * 文字起こし（55）、SNS運用・投稿（15, 57, 133, 303）、動画の企画・台本（283, 287, 293, 358）。
+ * 画像制作や動画編集も混ざるため、タイトルで文章系の仕事だけを拾う。
+ */
+export const TEXT_ADJACENT_CATEGORY_IDS = [
+  55, 15, 57, 133, 303, 283, 287, 293, 358,
+]
 
 export const DEFAULT_PROFILE: Profile = {
   name: '山田 花子',
@@ -153,10 +166,15 @@ export const DEFAULT_PROFILE: Profile = {
       '地域 記事',
       '教育 記事',
       'スポーツ 記事',
+      '文字起こし',
+      'SNS 投稿文',
+      '台本',
+      'シナリオ',
     ],
     sinceHours: 24,
     maxDetails: 40,
     categoryIds: WRITING_CATEGORY_IDS,
+    extraCategoryIds: TEXT_ADJACENT_CATEGORY_IDS,
   },
   fees: {
     tiers: [

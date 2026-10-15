@@ -257,11 +257,38 @@ export interface DigestResult {
   prefiltered: { listing: Listing; reason: string }[]
 }
 
+const TEXT_WORK =
+  /文字起こし|書き起こし|テープ起こし|投稿文|キャプション|台本|シナリオ|脚本|原稿|ライター|ライティング|文章/
+const NOT_TEXT_WORK =
+  /画像|デザイン|Canva|バナー|動画編集|編集者|字幕|ナレーター|ナレーション|出演|声優|ボイス|ディレクター|撮影|DM|営業|テレアポ/
+
+/** 文字起こし・SNS投稿文・台本など、文章を書く（起こす）仕事かをタイトルで判定する。 */
+export function isTextWork(title: string): boolean {
+  return TEXT_WORK.test(title) && !NOT_TEXT_WORK.test(title)
+}
+
+/** 仕事の種類（報告で判定基準を変えるための目印）。 */
+export function workType(l: Listing): string {
+  if (/文字起こし|書き起こし|テープ起こし/.test(l.title) || l.categoryId === 55)
+    return '文字起こし'
+  if (/台本|シナリオ|脚本/.test(l.title)) return '台本・シナリオ'
+  if (
+    /SNS|インスタ|Instagram|Threads|TikTok|X投稿|投稿文|キャプション/.test(
+      l.title,
+    )
+  )
+    return 'SNS投稿'
+  return '記事'
+}
+
 /** 詳細を読む前に、報酬だけで明らかに条件外の案件をふるい落とす。 */
 export function prefilter(l: Listing, profile: Profile): string | null {
   const cats = profile.search?.categoryIds
-  if (cats?.length && l.categoryId !== null && !cats.includes(l.categoryId))
-    return 'ライティング以外の仕事'
+  if (cats?.length && l.categoryId !== null && !cats.includes(l.categoryId)) {
+    const extra = profile.search?.extraCategoryIds ?? []
+    if (!extra.includes(l.categoryId) || !isTextWork(l.title))
+      return 'ライティング以外の仕事'
+  }
   if (
     /謝礼|ご意見|お聞かせ|協力者|聞かせてください|インタビューさせて|お話を(聞かせ|伺わせ)/.test(
       l.title,
@@ -489,6 +516,7 @@ export function digestMarkdown(r: DigestResult): string {
     return [
       `### ${n}. ${it.listing.title}（${it.verdict.score}点）`,
       '',
+      `- 種類：${workType(it.listing)}`,
       `- 条件：${line(it)}`,
       `- 想定時給：${it.verdict.estimatedHourly ? yen(it.verdict.estimatedHourly) : '-'}／応募 ${it.listing.applicants ?? '-'}人（募集${it.listing.hopeNumber ?? '-'}人）／締切 ${it.listing.expiredOn ?? '-'}`,
       `- 発注者：${it.listing.client.username}（${clientLine}）`,

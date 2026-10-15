@@ -10,6 +10,7 @@ import {
   prefilter,
   riskFlags,
   runDigest,
+  workType,
 } from '../scout/digest'
 
 const enc = (o: unknown) =>
@@ -181,5 +182,36 @@ describe('runDigest', () => {
     const md = digestMarkdown(r)
     expect(md).toContain('◎1件')
     expect(md).toContain('https://crowdworks.jp/public/jobs/10')
+  })
+})
+
+describe('text-adjacent jobs', () => {
+  test('keeps transcription / SNS copy / scripts in mixed categories, drops design and video editing', () => {
+    const mk = (title: string, cat: number) =>
+      parseSearchHtml(
+        searchHtml([
+          offer(
+            1,
+            title,
+            { fixed_price_payment: { min_budget: 5000, max_budget: 5000 } },
+            cat,
+          ),
+        ]),
+      )[0] as Listing
+    expect(
+      prefilter(mk('インタビュー音声の文字起こし', 55), DEFAULT_PROFILE),
+    ).toBeNull()
+    expect(
+      prefilter(mk('飲食店のInstagram投稿文ライター', 303), DEFAULT_PROFILE),
+    ).toBeNull()
+    expect(prefilter(mk('YouTube台本作成', 287), DEFAULT_PROFILE)).toBeNull()
+    expect(
+      prefilter(mk('SNS投稿画像の作成（Canva）', 303), DEFAULT_PROFILE),
+    ).toBe('ライティング以外の仕事')
+    expect(prefilter(mk('YouTube動画編集者募集', 293), DEFAULT_PROFILE)).toBe(
+      'ライティング以外の仕事',
+    )
+    expect(workType(mk('インタビュー音声の文字起こし', 55))).toBe('文字起こし')
+    expect(workType(mk('YouTube台本作成', 287))).toBe('台本・シナリオ')
   })
 })
