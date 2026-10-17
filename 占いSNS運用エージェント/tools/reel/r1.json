@@ -1,0 +1,29 @@
+{
+ "emblemPath": "../../assets/emblem.svg",
+ "duration": 14,
+ "coverAt": 1.5,
+ "scenes": [
+  {
+   "a": 0,
+   "b": 3.5,
+   "html": "<div class=\"l big\">今週、</div><div class=\"l big\">無料鑑定の枠は</div><div class=\"l big\"><span class=\"gold\">七名</span>。</div>"
+  },
+  {
+   "a": 3.5,
+   "b": 7.5,
+   "fx": "circles",
+   "html": "<div class=\"l\">心・星・言葉</div><div class=\"l\">三つの星図を重ねて</div><div class=\"l\">あなたの縁の配置を読む</div>"
+  },
+  {
+   "a": 7.5,
+   "b": 10.5,
+   "html": "<div class=\"l\">三つが交わらぬときは</div><div class=\"l\">交わらぬと告げる。</div>"
+  },
+  {
+   "a": 10.5,
+   "b": 14,
+   "html": "<div class=\"l\">鑑定の門は</div><div class=\"l\">プロフィールのLINEに。</div>"
+  }
+ ],
+ "portrait": "../../assets/portrait.png"
+}

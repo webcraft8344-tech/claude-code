@@ -1,0 +1,40 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:N;src:url(file://NODE_MODULES/@fontsource/noto-serif-jp/files/noto-serif-jp-japanese-700-normal.woff2);font-weight:700}
+@font-face{font-family:N;src:url(file://NODE_MODULES/@fontsource/noto-serif-jp/files/noto-serif-jp-japanese-400-normal.woff2);font-weight:400}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#0b0d22;font-family:N,serif}
+#bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,#3a2560 0%,transparent 55%),radial-gradient(ellipse at 80% 85%,#1d3a5c 0%,transparent 55%),linear-gradient(#0b0d22,#14122e)}
+#emb{position:absolute;left:90px;top:560px;width:900px;opacity:.14;mix-blend-mode:screen}
+.star{position:absolute;background:#fff6d8;border-radius:50%}
+#t1{position:absolute;top:150px;width:100%;text-align:center;font-size:84px;font-weight:700;color:#e8c77a;letter-spacing:.04em;text-shadow:0 0 24px rgba(232,199,122,.45)}
+#t2{position:absolute;top:262px;width:100%;text-align:center;font-size:82px;font-weight:700;color:#fff6d8;letter-spacing:.03em;text-shadow:0 0 22px rgba(0,0,0,.8)}
+#tbl{position:absolute;top:420px;left:60px;width:960px;border-collapse:collapse}
+#tbl td{height:94px;font-size:46px;text-align:center;color:#f3e6c0;border-bottom:1px solid rgba(232,199,122,.22)}
+#tbl tr.h td{height:70px;font-size:36px;color:#c9bfe8}
+#tbl td.r{width:170px;font-weight:700;color:#0b0d22}
+#tbl td.x{width:80px;color:#e8c77a}
+#foot{position:absolute;top:1690px;width:100%;text-align:center;font-size:60px;font-weight:700;color:#fff6d8;text-shadow:0 0 18px rgba(232,199,122,.6)}
+#sig{position:absolute;bottom:90px;width:100%;text-align:center;font-size:32px;color:#d9cfb0;opacity:.8}
+#cta{position:absolute;inset:0;display:none}
+.c{position:absolute;width:100%;text-align:center;color:#fff6d8;font-weight:700}
+</style></head><body><div id="bg"></div><img id="emb" src="file://ASSETS/emblem.png"><div id="stars"></div>
+<div id="main"><div id="t1">【星座×星座】</div><div id="t2">別れても忘れられない相性</div><table id="tbl"></table><div id="foot">長押しで止めて確認</div></div>
+<div id="cta">
+ <div class="c" style="top:470px;font-size:72px;color:#e8c77a">【11月の星図・無料】</div>
+ <div class="c" style="top:640px;font-size:64px">あなたの「星座」を</div>
+ <div class="c" style="top:740px;font-size:64px">コメントすると</div>
+ <div class="c" style="top:900px;font-size:58px;color:#e8c77a">11月の「動く刻・待つ刻」を</div>
+ <div class="c" style="top:990px;font-size:58px">お届けします</div>
+ <svg style="position:absolute;left:620px;top:1110px" width="400" height="300"><path d="M20 20 C 60 220, 220 250, 330 230" stroke="#e8c77a" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M300 200 L 345 230 L 300 262" stroke="#e8c77a" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+ <div class="c" style="top:1500px;font-size:34px;font-weight:400;color:#d9cfb0">※占いはエンターテインメントです</div>
+</div>
+<div id="sig">復縁の星図師　紫苑</div>
+<script>
+const st=document.getElementById('stars');let s=7;function R(){s=(s*9301+49297)%233280;return s/233280}
+for(let i=0;i<140;i++){const d=document.createElement('div');d.className='star';const z=R()*3+1;d.style.cssText=`left:${R()*1080}px;top:${R()*1920}px;width:${z}px;height:${z}px;opacity:${.3+R()*.6}`;st.appendChild(d)}
+const COL=['#e8c77a','#c9a8ff','#9cc8ff','#f2a6c4'];
+function page(p,rows){document.getElementById('main').style.display='block';document.getElementById('cta').style.display='none';
+ let h='<tr class="h"><td></td><td>女性</td><td class="x">×</td><td>男性</td></tr>';
+ rows.forEach((r,i)=>{h+=`<tr><td class="r" style="background:${COL[p]}">${p*12+i+1}位</td><td>${r[0]}</td><td class="x">×</td><td>${r[1]}</td></tr>`});
+ document.getElementById('tbl').innerHTML=h;}
+function cta(){document.getElementById('main').style.display='none';document.getElementById('cta').style.display='block'}
+</script></body></html>
