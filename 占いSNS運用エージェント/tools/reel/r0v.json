@@ -1,0 +1,58 @@
+{
+ "emblemPath": "../../assets/emblem.svg",
+ "portrait": "../../assets/portrait.png",
+ "duration": 30.5,
+ "coverAt": 1.0,
+ "scenes": [
+  {
+   "a": 0,
+   "b": 3.3,
+   "instant": true,
+   "html": "<div class=\"l big\">私は、</div><div class=\"l big\">愛する人を縛り、</div><div class=\"l big\"><span class=\"gold\">失った。</span></div>",
+   "say": "私は、愛する人を縛り、失った。"
+  },
+  {
+   "a": 3.3,
+   "b": 6.6,
+   "html": "<div class=\"l\">何も見えない夜、</div><div class=\"l\">ひとつの占いが</div><div class=\"l\">私を救った。</div>",
+   "say": "何も見えない夜、ひとつの占いが、私を救った。"
+  },
+  {
+   "a": 6.6,
+   "b": 10.6,
+   "html": "<div class=\"l\">「今は動く時ではない。</div><div class=\"l\">まず、あなた自身を</div><div class=\"l\">整える時」</div>",
+   "say": "今は、動く時ではない。まず、あなた自身を、整える時。"
+  },
+  {
+   "a": 10.6,
+   "b": 14.6,
+   "html": "<div class=\"l\">執着を手放し</div><div class=\"l\">“もう一度だけ”動いた刻</div><div class=\"l\">止まっていた縁は</div><div class=\"l\">再び巡り出した。</div>",
+   "say": "執着を手放し、もう一度だけ、動いた時。止まっていた縁は、再び巡り出した。"
+  },
+  {
+   "a": 14.6,
+   "b": 18.6,
+   "fx": "circles",
+   "html": "<div class=\"l\">答えは</div><div class=\"l\">心と、星と、</div><div class=\"l\">言葉の中にある。</div>",
+   "say": "答えは、心と、星と、言葉の中にある。"
+  },
+  {
+   "a": 18.6,
+   "b": 22.2,
+   "html": "<div class=\"l big\">三つが交わる一点しか</div><div class=\"l big\">私は語らない。</div>",
+   "say": "三つが交わる一点しか、私は語らない。"
+  },
+  {
+   "a": 22.2,
+   "b": 26.2,
+   "html": "<div class=\"l sm\">復縁の星図師</div><div class=\"l big\">紫苑</div>",
+   "say": "復縁の星図師、しおん。"
+  },
+  {
+   "a": 26.2,
+   "b": 30.5,
+   "html": "<div class=\"l\">あなたの縁は</div><div class=\"l\">まだ星図の上に残っている。</div><div class=\"gap\"></div><div class=\"l\">フォローして、刻を待て。</div><div class=\"l sm\">鑑定の門は、プロフィールに。</div>",
+   "say": "あなたの縁は、まだ星図の上に残っている。フォローして、時を待て。"
+  }
+ ]
+}
