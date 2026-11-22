@@ -1,0 +1,3 @@
+tools/tts/*.onnx
+tools/tts/*.bin
+tools/tts/voicevox/
